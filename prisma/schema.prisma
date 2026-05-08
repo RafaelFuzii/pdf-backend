@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  role     Role
+
+  @@map("users")
+}
+
+model Funcionario {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  cpf       String   @unique
+  createdAt DateTime @default(now())
+  diasTrabalhados DiasTrabalhados[]
+
+  @@map("funcionarios")
+}
+
+model DiasTrabalhados {
+  id            String   @id @default(uuid())
+  funcionarioId String
+  date          DateTime
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  
+  @@map("dias_trabalhados") 
+}
+
+enum Role {
+  USER
+  ADMIN
+}
