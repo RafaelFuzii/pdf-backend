@@ -1,32 +1,26 @@
 import { Router } from 'express';
-import { FuncionarioRepository } from './funcionario/funcionarioReposiroty'; // Atenção ao nome do arquivo
-import { FuncionarioService } from './funcionario/funcionarioService';
-import { FuncionarioController } from './funcionario/funcionarioController';
 import { AuthService } from './authentication/authService';
 import { AuthController } from './authentication/authController';
 import { Authenticated } from './middleware/authenticated';
+import { UsuarioService } from './usuarios/usuarioService';
+import { UsuarioController } from './usuarios/usuarioController';
+import { UsuarioRepository } from './usuarios/usuarioRepository';
 
-// CONFIGURAÇÃO DAS ROTAS DE FUNCIONÁRIOS
-const funcionarioRoutes = Router();
-const funcionarioRepository = new FuncionarioRepository();
-const funcionarioService = new FuncionarioService(funcionarioRepository);
-const funcionarioController = new FuncionarioController(funcionarioService);
+const UsuarioRoutes = Router();
+const usuarioRepository = new UsuarioRepository();
+const usuarioService = new UsuarioService(usuarioRepository);
+const usuarioController = new UsuarioController(usuarioService);
 
-// CONFIGURAÇÃO DAS ROTAS DE AUTENTICAÇÃO
 const authRoutes = Router();
 const authService = new AuthService();
 const authController = new AuthController(authService);
 
-// Usamos .bind para garantir que o 'this' da classe Controller não se perca
-// Rotas de Funcionarios
-funcionarioRoutes.get('/', Authenticated, funcionarioController.listarFuncionarios.bind(funcionarioController));
-funcionarioRoutes.get('/:id', Authenticated, funcionarioController.acharFuncionario.bind(funcionarioController));
-funcionarioRoutes.post('/criar', Authenticated, funcionarioController.criarFuncionario.bind(funcionarioController));
-funcionarioRoutes.post('/adicionar-dia/:funcionarioId', Authenticated, funcionarioController.adicionarDiaTrabalhado.bind(funcionarioController));
-funcionarioRoutes.put('/atualizar/:id', Authenticated, funcionarioController.atualizarFuncionario.bind(funcionarioController));
-funcionarioRoutes.delete('/deletar/:id', Authenticated, funcionarioController.deletarFuncionario.bind(funcionarioController));
+UsuarioRoutes.get('/', Authenticated, usuarioController.listarUsuarios.bind(usuarioController));
+UsuarioRoutes.get('/:id', Authenticated, usuarioController.acharUsuario.bind(usuarioController));
+UsuarioRoutes.post('/criar', usuarioController.criarUsuario.bind(usuarioController));
+UsuarioRoutes.put('/atualizar/:id', Authenticated, usuarioController.atualizarUsuario.bind(usuarioController));
+UsuarioRoutes.delete('/deletar/:id', Authenticated, usuarioController.deletarUsuario.bind(usuarioController));
 
-// Rotas de Autenticação
 authRoutes.post('/login', authController.handleLogin.bind(authController));
 
-export { funcionarioRoutes, authRoutes };
+export { UsuarioRoutes, authRoutes };
