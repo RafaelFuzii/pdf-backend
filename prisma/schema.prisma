@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"  
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Usuario {
-  id       String @id @default(uuid())
-  nome    String
-  email    String @unique
-  password String
-  telefone String
+  id         String     @id @default(uuid())
+  nome       String
+  email      String     @unique
+  password   String
+  telefone   String
   tipoPessoa TipoPessoa
-  cargo   String
-  funcao  String
-  role     Role
+  cargo      String
+  funcao     String
+  role       Role
 
   @@map("usuarios")
 }
