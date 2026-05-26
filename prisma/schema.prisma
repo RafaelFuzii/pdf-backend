@@ -1,43 +1,44 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../generated/prisma"  
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model User {
+model Usuario {
   id       String @id @default(uuid())
-  name     String
+  nome    String
   email    String @unique
   password String
+  telefone String
+  tipoPessoa TipoPessoa
+  cargo   String
+  funcao  String
   role     Role
 
-  @@map("users")
+  @@map("usuarios")
 }
 
-model Funcionario {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  cpf       String   @unique
-  createdAt DateTime @default(now())
-  diasTrabalhados DiasTrabalhados[]
+model Empresa {
+  id       String @id @default(uuid())
+  nome     String
+  email    String @unique
+  cnpj     String @unique
+  endereco String
+  telefone String
+  plano    String
 
-  @@map("funcionarios")
-}
-
-model DiasTrabalhados {
-  id            String   @id @default(uuid())
-  funcionarioId String
-  date          DateTime
-  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
-  
-  @@map("dias_trabalhados") 
+  @@map("empresas")
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum TipoPessoa {
+  FISICA
+  JURIDICA
 }
