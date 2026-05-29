@@ -33,6 +33,14 @@ model Empresa {
   @@map("empresas")
 }
 
+model DeducoesReceitaBruta {
+  id                          String @id @default(uuid())
+  tributosSobreVendasServicos Float
+  tributosSobreFaturamento    Float
+
+  @@map("deducoes_receita_bruta")
+}
+
 enum Role {
   USER
   ADMIN
