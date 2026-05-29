@@ -5,8 +5,8 @@ export class UsuarioController {
     constructor(private usuarioService: UsuarioService) {}
 
     async criarUsuario(req: Request, res: Response) {
-        const { nome, email, password, telefone, tipoPessoa, cargo, funcao, role } = req.body
-        const novoUsuario = await this.usuarioService.novoUsuario({ nome, email, password, telefone, tipoPessoa, cargo, funcao, role })
+        const { nome, email, password, telefone, tipoPessoa, cargo, funcao, role, plano } = req.body
+        const novoUsuario = await this.usuarioService.novoUsuario({ nome, email, password, telefone, tipoPessoa, cargo, funcao, role, plano })
         res.status(201).json(novoUsuario)
     }
 
@@ -22,11 +22,18 @@ export class UsuarioController {
         res.status(200).json(usuarios)
     }
 
+    async adicionarCnpj(req: Request<{ id: string }>, res: Response) {
+        const { id } = req.params;
+        const { nome, cnpj, email, endereco, telefone} = req.body
+        await this.usuarioService.adcionarCnpj(id, {  nome, cnpj, email, endereco, telefone })
+        res.status(200).json({ message: "CNPJ vinculado ao usuário com sucesso" })
+    }
+
     async atualizarUsuario(req: Request<{ id: string }>, res: Response) {
         const { id } = req.params;
-        const { nome, email, password, telefone, tipoPessoa, cargo, funcao, role } = req.body
+        const { nome, email, password, telefone, tipoPessoa, cargo, funcao, role, plano } = req.body
         console.log(id)
-        const usuarioAtualizado = await this.usuarioService.atualizarUsuario(id, { nome, email, password, telefone, tipoPessoa, cargo, funcao, role })
+        const usuarioAtualizado = await this.usuarioService.atualizarUsuario(id, { nome, email, password, telefone, tipoPessoa, cargo, funcao, role, plano })
         res.status(200).json(usuarioAtualizado)
     }
 
