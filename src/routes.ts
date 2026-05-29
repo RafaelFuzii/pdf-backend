@@ -5,11 +5,24 @@ import { Authenticated } from './middleware/authenticated';
 import { UsuarioService } from './usuarios/usuarioService';
 import { UsuarioController } from './usuarios/usuarioController';
 import { UsuarioRepository } from './usuarios/usuarioRepository';
+import { GoogleController } from './google/googleController';
+import { GoogleRepository } from './google/googleRepository';
+import { GoogleService } from './google/googleService';
+import multer from 'multer';
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+});
 
 const UsuarioRoutes = Router();
 const usuarioRepository = new UsuarioRepository();
 const usuarioService = new UsuarioService(usuarioRepository);
 const usuarioController = new UsuarioController(usuarioService);
+
+const googleRoutes = Router();
+const googleRepository = new GoogleRepository();
+const googleService = new GoogleService(googleRepository);
+const googleController = new GoogleController(googleService);
 
 const authRoutes = Router();
 const authService = new AuthService();
@@ -22,6 +35,8 @@ UsuarioRoutes.post('/adicionar-cnpj/:id', Authenticated, usuarioController.adici
 UsuarioRoutes.put('/atualizar/:id', Authenticated, usuarioController.atualizarUsuario.bind(usuarioController));
 UsuarioRoutes.delete('/deletar/:id', Authenticated, usuarioController.deletarUsuario.bind(usuarioController));
 
+googleRoutes.post('/processar-pdf', upload.single('pdf'), googleController.processarPDF.bind(googleController));
+
 authRoutes.post('/login', authController.handleLogin.bind(authController));
 
-export { UsuarioRoutes, authRoutes };
+export { UsuarioRoutes, authRoutes, googleRoutes };

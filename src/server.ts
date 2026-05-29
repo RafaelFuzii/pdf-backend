@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import { authRoutes, UsuarioRoutes } from './routes';
+import { authRoutes, googleRoutes, UsuarioRoutes } from './routes';
 import { errorMessage } from './errors/errorMessage';
 
 const app = express();
@@ -10,8 +10,9 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/usuarios', UsuarioRoutes);
-app.use('/auth', authRoutes);
+app.use('/api/usuarios', UsuarioRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/google', googleRoutes);
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
   if (err instanceof errorMessage) {
