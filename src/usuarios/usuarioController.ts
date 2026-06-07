@@ -29,6 +29,12 @@ export class UsuarioController {
         res.status(200).json({ message: "CNPJ vinculado ao usuário com sucesso" })
     }
 
+    async listarCnpjsUsuario(req: Request<{ id: string }>, res: Response) {
+        const { id } = req.params;
+        const empresas = await this.usuarioService.listarCNPJsUsuario(id)
+        res.status(200).json(empresas)
+    }
+
     async atualizarUsuario(req: Request<{ id: string }>, res: Response) {
         const { id } = req.params;
         const { nome, email, password, telefone, tipoPessoa, cargo, funcao, role, plano } = req.body

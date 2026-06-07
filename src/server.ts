@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import 'express-async-errors';
 import helmet from 'helmet';
 import cors from 'cors';
 import { authRoutes, googleRoutes, UsuarioRoutes } from './routes';

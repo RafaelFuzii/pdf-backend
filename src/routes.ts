@@ -32,10 +32,11 @@ UsuarioRoutes.get('/', Authenticated, usuarioController.listarUsuarios.bind(usua
 UsuarioRoutes.get('/:id', Authenticated, usuarioController.acharUsuario.bind(usuarioController));
 UsuarioRoutes.post('/criar', usuarioController.criarUsuario.bind(usuarioController));
 UsuarioRoutes.post('/adicionar-cnpj/:id', Authenticated, usuarioController.adicionarCnpj.bind(usuarioController));
+UsuarioRoutes.get('/listar-cnpjs/:id', Authenticated, usuarioController.listarCnpjsUsuario.bind(usuarioController));
 UsuarioRoutes.put('/atualizar/:id', Authenticated, usuarioController.atualizarUsuario.bind(usuarioController));
 UsuarioRoutes.delete('/deletar/:id', Authenticated, usuarioController.deletarUsuario.bind(usuarioController));
 
-googleRoutes.post('/processar-pdf', upload.single('pdf'), googleController.processarPDF.bind(googleController));
+googleRoutes.post('/processar-pdf/:empresaId', upload.single('pdf'), googleController.processarPDF.bind(googleController));
 
 authRoutes.post('/login', authController.handleLogin.bind(authController));
 

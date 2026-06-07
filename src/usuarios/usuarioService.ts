@@ -64,4 +64,13 @@ export class UsuarioService {
 
         await this.usuarioRepository.vincularCnpjUsuario(id, data)
     }
+
+    async listarCNPJsUsuario(id: string) {
+        const usuario = await this.usuarioRepository.findById(id)
+        if (!usuario) {
+            throw new errorMessage("Usuário não encontrado", 404)
+        }
+        return await this.usuarioRepository.findAllEmpresas(usuario.email)
+
+    }
 }
