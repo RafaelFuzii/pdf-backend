@@ -1,7 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
+import 'express-async-errors';
 import helmet from 'helmet';
 import cors from 'cors';
-import { authRoutes, UsuarioRoutes, deducoesRoutes } from './routes';
+import { authRoutes, UsuarioRoutes, deducoesRoutes, googleRoutes } from './routes';
 import { errorMessage } from './errors/errorMessage';
 
 const app = express();
@@ -10,7 +11,9 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/usuarios', UsuarioRoutes);
+app.use('/api/usuarios', UsuarioRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/google', googleRoutes);
 app.use('/auth', authRoutes);
 app.use('/deducoes-receita-bruta', deducoesRoutes);
 
