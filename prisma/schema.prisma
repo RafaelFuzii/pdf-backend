@@ -32,8 +32,18 @@ model Empresa {
   telefone  String
   usuarioId String
   usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  DREs      DRE[]
 
   @@map("empresas")
+}
+
+model DRE {
+  id        String  @id @default(uuid())
+  dados     Json?
+  empresaId String
+  empresa   Empresa @relation(fields: [empresaId], references: [id])
+
+  @@map("DREs")
 }
 
 enum Role {
