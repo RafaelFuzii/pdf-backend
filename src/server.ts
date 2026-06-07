@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import helmet from 'helmet';
 import cors from 'cors';
-import { authRoutes, googleRoutes, UsuarioRoutes } from './routes';
+import { authRoutes, UsuarioRoutes, deducoesRoutes, googleRoutes } from './routes';
 import { errorMessage } from './errors/errorMessage';
 
 const app = express();
@@ -14,6 +14,8 @@ app.use(express.json());
 app.use('/api/usuarios', UsuarioRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/google', googleRoutes);
+app.use('/auth', authRoutes);
+app.use('/deducoes-receita-bruta', deducoesRoutes);
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
   if (err instanceof errorMessage) {
@@ -23,7 +25,7 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
     });
   }
 
-  console.error(err); 
+  console.error(err);
   return response.status(500).json({
     status: 'error',
     message: 'Internal server error',
