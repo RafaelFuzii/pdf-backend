@@ -148,7 +148,7 @@ export class GoogleService {
     const response = await this.executarComOutroModelo(async (tentativa) => {
       return await ai.models.generateContent({
         model: this.escolherModeloIA(idenficarTipoDRE.tipo_dre, tentativa) as string,
-        contents: [promptText, createPartFromUri(myfile.uri, myfile.mimeType, promptText)],
+        contents: [promptText, createPartFromUri(myfile.uri, myfile.mimeType)],
         config: {
           responseMimeType: 'application/json',
           responseSchema: this.obterSchemaDRE(idenficarTipoDRE.tipo_dre)
