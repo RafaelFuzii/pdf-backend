@@ -214,4 +214,17 @@ export class GoogleService {
     const resultadoPeriodo = JSON.parse(response.text as string)
     return resultadoPeriodo
   }
+
+  async buscarDREPorEmpresa(empresaId: string) {
+    if (!empresaId) {
+      throw new errorMessage('Nenhum ID de empresa foi fornecido.', 400)
+    }
+
+    const resultado = await this.GoogleRepository.buscarDREPorEmpresa(empresaId)
+    if (!resultado || resultado.length === 0) {
+      throw new errorMessage('Nenhum DRE encontrado para a empresa fornecida.', 404)
+    }
+
+    return resultado
+  }
 }

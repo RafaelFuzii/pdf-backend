@@ -12,4 +12,12 @@ export class GoogleRepository {
             }
         });
     }
+
+    async buscarDREPorEmpresa(empresaId: string) {
+        return await prisma.dRE.findMany({
+            where: {
+                empresaId
+            }
+        });
+    }
 }

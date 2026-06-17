@@ -9,4 +9,9 @@ export class GoogleController {
         res.status(200).json({ message: "PDF processado com sucesso", resultado });
     }
 
+    async buscarDREPorEmpresa(req: Request, res: Response) {
+        const resultado = await this.googleService.buscarDREPorEmpresa(req.params.empresaId as string);
+        res.status(200).json({ message: "DREs encontrados com sucesso", resultado })
+    }
+
 }
