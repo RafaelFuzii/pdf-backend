@@ -28,9 +28,29 @@ export class GoogleService {
               },
               required: ['mes', 'conta', 'valor', 'operacao']
             }
+          },
+          despesas: {
+            type: 'ARRAY',
+            items: {
+              type: 'OBJECT',
+              properties: {
+                valor_total_despesas: { type: 'NUMBER', description: 'Soma total dos valores de "DESPESAS OPERACIONAIS", "CUSTOS" "DEDUÇÕES DA RECEITA BRUTA" e "DESPESA COM TRIBUTOS SOBRE O LUCRO"' }
+              },
+              required: ['valor_total_despesas']
+            }
+          },
+          lucro_liquido: {
+            type: 'ARRAY',
+            items: {
+              type: 'OBJECT',
+              properties: {
+                valor: { type: 'NUMBER', description: 'Valor do lucro líquido.' }
+              },
+              required: ['valor']
+            }
           }
         },
-        required: ['empresa', 'periodo', 'linhas_dre']
+        required: ['empresa', 'periodo', 'linhas_dre', 'despesas', 'lucro_liquido']
       }
     } else if (tipoDRE === 'MENSAL+') {
       return {
@@ -98,6 +118,7 @@ export class GoogleService {
     try {
       return await processarPDF(tentativaAtual);
     } catch (error: any) {
+      console.log(error)
       const ErroTemporario = error.status === 503 || error.status === 429;
 
       if (ErroTemporario && tentativas > 0) {
