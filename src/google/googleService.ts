@@ -10,7 +10,7 @@ export class GoogleService {
   constructor(private GoogleRepository: GoogleRepository) { }
 
   obterSchemaDRE(tipoDRE: string) {
-    if (tipoDRE === 'MENSAL') {
+    if (tipoDRE === 'MENSAL' || tipoDRE === 'ANUAL') {
       return {
         type: 'OBJECT',
         properties: {
@@ -71,7 +71,7 @@ export class GoogleService {
   escolherModeloIA(tipoDRE: string, tentativas: number) {
     if (tipoDRE === 'MENSAL+' && tentativas == 1) {
       return 'gemini-2.5-flash'
-    } else if (tipoDRE === 'MENSAL') {
+    } else if (tipoDRE === 'MENSAL' || tipoDRE === 'ANUAL') {
       return 'gemini-3.1-flash-lite'
     } else if (tipoDRE === 'MENSAL+' && tentativas == 2) {
       return 'gemini-3.5-flash'
@@ -86,10 +86,11 @@ export class GoogleService {
       2. PROCESSAMENTO MULTIPÁGINAS DINÂMICO: Processe TODAS as páginas do documento, do início ao fim absoluto, independentemente de quantas páginas o arquivo possua (seja 1, 4, 10 ou mais). Continue a varredura sequencialmente pelas quebras de página até encontrar a última linha de totalizadores (como "Lucro Líquido do Período" ou dados informativos finais). Não interrompa a extração antes do fim do arquivo.
       3. DETALHAMENTO COMPLETO: Não ignore subcontas, deduções ou despesas detalhadas apenas por estarem em texto normal ou sem negrito. Mantenha a ordem exata das contas conforme aparecem no documento original.
       4. MAPEAMENTO DE VALORES: Insira cada coluna identificada dentro da lista 'valores_por_coluna', associando o nome identificador da coluna (ex: "Jul", "Ago") ao seu respectivo valor numérico. Se em algum mês/coluna o valor for nulo, invisível ou vazio, envie como 0.`;
-    } else if (tipoDRE === 'MENSAL') {
+    } else if (tipoDRE === 'MENSAL' || tipoDRE === 'ANUAL') {
       return `Você é um especialista em contabilidade. Analise o documento de DRE anexo.
       Extraia os dados financeiros estruturados, identificando o nome da empresa, o período do exercício e uma lista contendo todas as linhas da DRE com suas respectivas contas e valores numéricos.
-      ATENÇÃO: É fundamental que você capture absolutamente todas as linhas do relatório. Não ignore os subitens, deduções ou contas operacionais detalhadas apenas por estarem em texto comum extraia tanto os títulos em negrito quanto as partes e linhas que NÃO estão em negrito.`
+      Caso o nome da empresa não esteja explicitamente indicado no documento, Coloque o Mes ou o Ano baseado no contexto da DRE lida como (ex: Mensal/nome do mês, Anual/nome do ano, Anual, ou Mensal).
+      ATENÇÃO: É fundamental que você capture absolutamente todas as linhas do relatório. Não ignore os subitens, deduções ou contas operacionais detalhadas apenas por estarem em texto comum extraia tanto os títulos em negrito quanto as partes e linhas que NÃO estão em negrito. Não altere o valor caso seja negativo exemplo: se a linha for "Despesas Operacionais -5.000", envie o valor como -5000. Não confunda com os parenteses que está na frente dos nomes das contas.`;
     }
   }
 
@@ -225,6 +226,14 @@ export class GoogleService {
       throw new errorMessage('Nenhum DRE encontrado para a empresa fornecida.', 404)
     }
 
+    return resultado
+  }
+
+  async buscarTodosDREs() {
+    const resultado = await this.GoogleRepository.buscarTodosDREs()
+    if (!resultado || resultado.length === 0) {
+      throw new errorMessage('Nenhum DRE encontrado.', 404)
+    }
     return resultado
   }
 }

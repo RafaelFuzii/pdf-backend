@@ -46,6 +46,8 @@ UsuarioRoutes.delete('/deletar/:id', Authenticated, usuarioController.deletarUsu
 
 googleRoutes.post('/processar-pdf/:empresaId', upload.single('pdf'), googleController.processarPDF.bind(googleController));
 googleRoutes.get('/buscar-dre/:empresaId', googleController.buscarDREPorEmpresa.bind(googleController));
+googleRoutes.get('/buscar-todos-dre', googleController.buscarTodosDREs.bind(googleController));
+
 
 authRoutes.post('/login', authController.handleLogin.bind(authController));
 

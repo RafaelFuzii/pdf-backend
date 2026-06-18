@@ -20,4 +20,8 @@ export class GoogleRepository {
             }
         });
     }
+
+    async buscarTodosDREs() {
+        return await prisma.dRE.findMany();
+    }
 }

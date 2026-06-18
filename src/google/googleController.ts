@@ -14,4 +14,9 @@ export class GoogleController {
         res.status(200).json({ message: "DREs encontrados com sucesso", resultado })
     }
 
+    async buscarTodosDREs(req: Request, res: Response) {
+        const resultado = await this.googleService.buscarTodosDREs();
+        res.status(200).json({ message: "Todos os DREs encontrados com sucesso", resultado })
+    }
+
 }
